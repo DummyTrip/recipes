@@ -14,8 +14,8 @@ class CreateQuantitiesTable extends Migration
     {
         Schema::create('quantities', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('value')->unsigned();
-            $table->integer('measurement')->unsigned();
+            $table->integer('value');
+            $table->string('measurement');
             $table->timestamps();
         });
     }
@@ -27,6 +27,6 @@ class CreateQuantitiesTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::drop('quantities');
     }
 }

@@ -4,7 +4,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\Schema;
 
-class CreateIngredientQuantityTable extends Migration
+class CreateIngredientRecipeTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,17 @@ class CreateIngredientQuantityTable extends Migration
      */
     public function up()
     {
-        Schema::create('ingredient_quantity', function (Blueprint $table) {
+        Schema::create('ingredient_recipe', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('ingredient_id')->unsigned();
+            $table->integer('recipe_id')->unsigned();
             $table->integer('quantity_id')->unsigned();
             $table->timestamps();
         });
 
-        Schema::table('ingredient_quantity', function (Blueprint $table) {
+        Schema::table('ingredient_recipe', function (Blueprint $table) {
             $table->foreign('ingredient_id')->references('id')->on('ingredients');
+            $table->foreign('recipe_id')->references('id')->on('recipes');
             $table->foreign('quantity_id')->references('id')->on('quantities');
         });
     }
@@ -33,6 +35,6 @@ class CreateIngredientQuantityTable extends Migration
      */
     public function down()
     {
-        Schema::drop('ingredient_quantity');
+        Schema::drop('ingredient_recipe');
     }
 }
