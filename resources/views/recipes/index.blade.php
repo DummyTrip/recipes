@@ -7,18 +7,18 @@
 
         @foreach($recipes as $recipe)
             <div class="panel-body">
-{{--                <h2><a href="{{ action("RecipeController@show", ['id' => $recipe->id]) }}">{{$recipe->name}}</a></h2>--}}
-                <h2>{{$recipe->name}}</h2>
+                <h2><a href="{{ action("RecipeController@show", ['id' => $recipe->id]) }}">{{$recipe->name}}</a></h2>
+                <h4>{{ $recipe->description }}</h4>
                 <hr>
                 <p>Category: {{ $recipe->category }}</p>
                 <h4>Ingredients:</h4>
                 <ul>
                     @foreach($recipe->ingredients as $info)
                         <li>
-                            <h3>{{ $info['quantity']->value }}
+                            <h4>{{ $info['value']}}
                                 {{ $info['quantity']->measurement }}
                                 <a href="{{ action("RecipeController@index", ['ing[]' => $info['ingredient']->name]) }}">{{ $info['ingredient']->name }}</a>
-                            </h3>
+                            </h4>
                         </li>
                     @endforeach
                 </ul>

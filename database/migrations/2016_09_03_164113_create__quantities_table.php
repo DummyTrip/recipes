@@ -14,7 +14,6 @@ class CreateQuantitiesTable extends Migration
     {
         Schema::create('quantities', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('value');
             $table->string('measurement');
             $table->timestamps();
         });

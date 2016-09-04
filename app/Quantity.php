@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Quantity extends Model
 {
-    // ['id', 'value', 'measurement']
+    // ['id','measurement']
 
-    protected $fillable = ['value', 'measurement'];
+    protected $fillable = ['measurement'];
 
     public function ingredient()
     {

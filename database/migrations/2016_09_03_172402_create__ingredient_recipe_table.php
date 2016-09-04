@@ -18,6 +18,7 @@ class CreateIngredientRecipeTable extends Migration
             $table->integer('ingredient_id')->unsigned();
             $table->integer('recipe_id')->unsigned();
             $table->integer('quantity_id')->unsigned();
+            $table->string('value');
             $table->timestamps();
         });
 

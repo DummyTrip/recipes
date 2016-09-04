@@ -9,7 +9,7 @@
         <ul>
             @foreach($recipe->ingredients as $info)
                 <li>
-                    <h3>{{ $info['quantity']->value }}
+                    <h3>{{ $info['value']}}
                         {{ $info['quantity']->measurement }}
                         <a href="{{ action("RecipeController@index", ['ing[]' => $info['ingredient']->name]) }}">{{ $info['ingredient']->name }}</a>
                     </h3>

@@ -21,6 +21,12 @@ class RecipeController extends Controller
     public function index(Request $request)
     {
         if ($request->has('ing')){
+//            $tmp = [];
+//            foreach ($request->get('ing') as $name){
+//                $tmp[] = $name;
+//            }
+//            return $tmp;
+
             // get recipes where ingredients has name in $request->ing
             $recipes = Recipe::whereHas('ingredients', function($q) use ($request)
             {
@@ -30,7 +36,7 @@ class RecipeController extends Controller
         {
             $recipes = Recipe::paginate(20);
         }
-//        return $recipes;
+        return $recipes;
         return view('recipes.index', compact('recipes'));
     }
 
@@ -124,11 +130,10 @@ class RecipeController extends Controller
         $recipe->save();
 
         foreach ($input['ingredients'] as $key => $value) {
-            $tmp[] = [$key, $value['name'], $value['value'], $value['measurement']];
             $ingredient = Ingredient::firstOrCreate(['name' => $value['name']]);
-            $quantity = Quantity::firstOrCreate(['value' => $value['value'], 'measurement' => $value['measurement']]);
+            $quantity = Quantity::firstOrCreate(['measurement' => $value['measurement']]);
 
-            $recipe->ingredients()->syncWithoutDetaching([$ingredient->id => ['quantity_id' => $quantity->id]]);
+            $recipe->ingredients()->syncWithoutDetaching([$ingredient->id => ['quantity_id' => $quantity->id, 'value' => $value['value']]]);
         }
 
 

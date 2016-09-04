@@ -16,7 +16,7 @@ class Recipe extends Model
 
     public function ingredients()
     {
-        return $this->belongsToMany('App\Ingredient')->withPivot('quantity_id');
+        return $this->belongsToMany('App\Ingredient')->withPivot('quantity_id', 'value');
     }
 
     public function getIngredientsAttribute()
@@ -26,12 +26,13 @@ class Recipe extends Model
 
     public function ingredientsInfo()
     {
-        $ingredient_ids = $this->ingredients()->get()->lists('id');
+        $ingredients = $this->ingredients()->get();
         $recipe = [];
 
-        foreach ($ingredient_ids as $ingredient_id) {
-            $ingredient = Ingredient::find($ingredient_id);
-            $recipe[] = ['ingredient' => $ingredient, 'quantity' => $ingredient->quantity($this->id)];
+        foreach ($ingredients as $ingredient) {
+            $pivot = $ingredient->pivot;
+
+            $recipe[] = ['ingredient' => $ingredient, 'quantity' => Quantity::find($pivot->quantity_id), 'value' => $pivot->value];
         }
 
         return $recipe;
