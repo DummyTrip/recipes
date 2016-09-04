@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\RecipeRequest;
+use App\Ingredient;
+use App\Quantity;
 use App\Recipe;
 use Illuminate\Http\Request;
 
@@ -23,12 +25,12 @@ class RecipeController extends Controller
             $recipes = Recipe::whereHas('ingredients', function($q) use ($request)
             {
                 $q->whereIn('name', $request->ing);
-            })->get();
+            })->paginate(20);
         } else
         {
-            $recipes = Recipe::all();
+            $recipes = Recipe::paginate(20);
         }
-
+//        return $recipes;
         return view('recipes.index', compact('recipes'));
     }
 
@@ -51,7 +53,11 @@ class RecipeController extends Controller
     public function store(RecipeRequest $request)
     {
         $input = $request->all();
-
+        $tmp = [];
+        foreach ($input['ingredients'] as $key => $value) {
+            $tmp[] = [$key, $value];
+        }
+//        return $tmp;
         $recipe = new Recipe();
 
         $this->saveRecipe($recipe, $input);
@@ -116,6 +122,16 @@ class RecipeController extends Controller
         $recipe->category = $input['category'];
 
         $recipe->save();
+
+        foreach ($input['ingredients'] as $key => $value) {
+            $tmp[] = [$key, $value['name'], $value['value'], $value['measurement']];
+            $ingredient = Ingredient::firstOrCreate(['name' => $value['name']]);
+            $quantity = Quantity::firstOrCreate(['value' => $value['value'], 'measurement' => $value['measurement']]);
+
+            $recipe->ingredients()->syncWithoutDetaching([$ingredient->id => ['quantity_id' => $quantity->id]]);
+        }
+
+
     }
 
 }
