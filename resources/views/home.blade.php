@@ -8,15 +8,9 @@
                     <div class="panel-heading">Dashboard</div>
 
                     <div class="panel-body">
-                        <p>You are logged in!</p>
-
-                        <h3>Pages</h3>
-                        <ul>
-                            <li><a href="{{ action('RecipeController@index') }}">Recipes</a></li>
-                            <li><a href="{{ action('RecipeController@create') }}">Create Recipe</a></li>
-
-
-                        </ul>
+                        <a href="{{ action('RecipeController@index') }}"><h2>Рецепти</h2></a>
+                        <hr>
+                        <a href="{{ action('RecipeController@create') }}"><h2>Додај Рецепт</h2></a>
                     </div>
                 </div>
             </div>

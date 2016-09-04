@@ -36,7 +36,7 @@ class RecipeController extends Controller
         {
             $recipes = Recipe::paginate(20);
         }
-        return $recipes;
+//        return $recipes;
         return view('recipes.index', compact('recipes'));
     }
 
