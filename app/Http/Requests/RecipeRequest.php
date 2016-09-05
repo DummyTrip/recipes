@@ -23,7 +23,6 @@ class RecipeRequest extends Request
         foreach ($this->input('ingredients') as $key => $value) {
             $messages['ingredients.'.$key.'.name.required'] = 'The name field is required.';
             $messages['ingredients.'.$key.'.value.required'] = 'The value field is required.';
-            $messages['ingredients.'.$key.'.measurement.required'] = 'The measurement field is required.';
         }
 
         return $messages;
@@ -41,14 +40,10 @@ class RecipeRequest extends Request
             'category' => 'required',
         ];
 
-        foreach ($this->input('ingredients') as $key => $value) {
-            $rules['ingredients.'.$key.'.name'] = ['required'];
-            $rules['ingredients.'.$key.'.value'] = ['required'];
-            $rules['ingredients.'.$key.'.measurement'] = ['required'];
-//            $rules['ingredients['.$key.'][name]'] = ['required'];
-//            $rules['ingredients['.$key.'][value]'] = ['required'];
-//            $rules['ingredients['.$key.'][measurement]'] = ['required'];
-        }
+//        foreach ($this->input('ingredients') as $key => $value) {
+//            $rules['ingredients.'.$key.'.name'] = ['required'];
+//            $rules['ingredients.'.$key.'.value'] = ['required'];
+//        }
 
         return $rules;
     }
