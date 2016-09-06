@@ -17,7 +17,9 @@
                         <li>
                             <h4>{{ $info['value']}}
                                 {{ $info['quantity']->measurement }}
-                                <a href="{{ action("RecipeController@index", ['ing[]' => $info['ingredient']->name]) }}">{{ $info['ingredient']->name }}</a>
+                                {{--*/ $query_parameters = Request::only('ing') /*--}}
+                                {{--*/ $query_parameters['ing[]'] = $info['ingredient']->name /*--}}
+                                {{ link_to_action("RecipeController@index", $info['ingredient']->name, $query_parameters ) }}
                             </h4>
                         </li>
                     @endforeach
