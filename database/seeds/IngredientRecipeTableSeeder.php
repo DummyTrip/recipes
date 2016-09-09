@@ -30,7 +30,7 @@ class IngredientRecipeTableSeeder extends Seeder
             ['ingredient_id' => '14', 'recipe_id' => '3', 'quantity_id' => '1', 'value' => '5', 'created_at' => \Carbon\Carbon::now(), 'updated_at' => \Carbon\Carbon::now()],
             ['ingredient_id' => '7', 'recipe_id' => '3', 'quantity_id' => '1', 'value' => '1', 'created_at' => \Carbon\Carbon::now(), 'updated_at' => \Carbon\Carbon::now()],
             ['ingredient_id' => '15', 'recipe_id' => '3', 'quantity_id' => '2', 'value' => '1/4', 'created_at' => \Carbon\Carbon::now(), 'updated_at' => \Carbon\Carbon::now()],
-            ['ingredient_id' => '15', 'recipe_id' => '3', 'quantity_id' => '1', 'value' => 'До MAX линијата', 'created_at' => \Carbon\Carbon::now(), 'updated_at' => \Carbon\Carbon::now()],
+            ['ingredient_id' => '6', 'recipe_id' => '3', 'quantity_id' => '1', 'value' => 'До MAX линијата', 'created_at' => \Carbon\Carbon::now(), 'updated_at' => \Carbon\Carbon::now()],
 
             ['ingredient_id' => '1', 'recipe_id' => '4', 'quantity_id' => '2', 'value' => '1/2', 'created_at' => \Carbon\Carbon::now(), 'updated_at' => \Carbon\Carbon::now()],
             ['ingredient_id' => '16', 'recipe_id' => '4', 'quantity_id' => '2', 'value' => '1/2', 'created_at' => \Carbon\Carbon::now(), 'updated_at' => \Carbon\Carbon::now()],
