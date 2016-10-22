@@ -10,6 +10,7 @@
                 <h2><a href="{{ action("RecipeController@show", ['id' => $recipe->id]) }}">{{$recipe->name}}</a></h2>
                 <h4>{{ $recipe->description }}</h4>
                 <hr>
+                <h3>Creator: {{ $recipe->creator->name }}</h3>
                 <p>Category: {{ $recipe->category }}</p>
                 <h4>Ingredients:</h4>
                 <ul>
@@ -24,6 +25,7 @@
                         </li>
                     @endforeach
                 </ul>
+                <h3>Price: {{ $recipe->price }}</h3>
                 <hr>
             </div>
         @endforeach

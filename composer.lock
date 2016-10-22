@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "7198f2a1838f5bd46a2f07a0a30a0b95",
-    "content-hash": "d71e1e22e6e811b95196d1a504ec8e06",
+    "hash": "0c489f2646308c982288c3875102bf3b",
+    "content-hash": "f856df969b440506688115fe56cf002c",
     "packages": [
         {
             "name": "barryvdh/laravel-ide-helper",
@@ -121,6 +121,53 @@
                 }
             ],
             "time": "2016-06-13 19:28:20"
+        },
+        {
+            "name": "caffeinated/menus",
+            "version": "v2.3.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/caffeinated/menus.git",
+                "reference": "307475d36e9d0c47e317774ac7d86c3565e13ab4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/caffeinated/menus/zipball/307475d36e9d0c47e317774ac7d86c3565e13ab4",
+                "reference": "307475d36e9d0c47e317774ac7d86c3565e13ab4",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/config": "5.1.*|5.2.*",
+                "illuminate/routing": "5.1.*|5.2.*",
+                "illuminate/support": "~5.1.24|5.2.*",
+                "illuminate/view": "5.1.*|5.2.*",
+                "laravelcollective/html": "5.1.*|5.2.*",
+                "php": ">=5.5.9"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Caffeinated\\Menus\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Shea Lewis",
+                    "email": "shea.lewis89@gmail.com"
+                }
+            ],
+            "description": "Laravel 5 Menus",
+            "keywords": [
+                "caffeinated",
+                "laravel",
+                "menu",
+                "navigation"
+            ],
+            "time": "2016-05-23 01:25:48"
         },
         {
             "name": "classpreloader/classpreloader",

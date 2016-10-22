@@ -43,6 +43,8 @@
         index = -1;
 
         {{--$(document).ready(function() {--}}
+            {{--alert("da");--}}
+
             {{--@if( session('index') > 0 )--}}
                 {{--@foreach( range(0, session('index')) as $index )--}}
                     {{--addInputIngredient();--}}
@@ -50,7 +52,8 @@
             {{--@endif--}}
         {{--});--}}
 
-        $( "#add_ingredient" ).click(function() {
+
+        $("#add_ingredient").click(function() {
             // add the new div after 100 milliseconds
             index = index + 1;
             setTimeout(addInputIngredient, 100);

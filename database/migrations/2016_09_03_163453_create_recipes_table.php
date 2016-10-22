@@ -15,10 +15,16 @@ class CreateRecipesTable extends Migration
     {
         Schema::create('recipes', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('creator_id')->unsigned();
             $table->string('name');
             $table->string('category');
             $table->string('description');
+            $table->integer('price');
             $table->timestamps();
+        });
+
+        Schema::table('recipes', function (Blueprint $table) {
+            $table->foreign('creator_id')->references('id')->on('users');
         });
     }
 

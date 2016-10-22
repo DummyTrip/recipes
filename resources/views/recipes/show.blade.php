@@ -4,6 +4,7 @@
     <div class="panel-body">
         <h2>{{$recipe->name}}</h2>
         <hr>
+        <h3>Creator: {{ $recipe->creator->name }}</h3>
         <p>Category: {{ $recipe->category }}</p>
         <h2>Ingredients:</h2>
         <ul>
@@ -16,6 +17,9 @@
                 </li>
             @endforeach
         </ul>
+
+        <h3>Price: {{ $recipe->price }}</h3>
+
     </div>
 
     <div class="panel-body">

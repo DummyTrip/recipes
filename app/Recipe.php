@@ -37,4 +37,12 @@ class Recipe extends Model
 
         return $recipe;
     }
+
+        public function creator() {
+        return $this->belongsTo('App\User');
+    }
+    
+    public function owners() {
+        return $this->belongsToMany('App\User');
+    }
 }
