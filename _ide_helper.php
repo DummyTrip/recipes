@@ -1,7 +1,7 @@
 <?php
 /**
  * A helper file for Laravel 5, to provide autocomplete information to your IDE
- * Generated for Laravel 5.2.45 on 2016-10-22.
+ * Generated for Laravel 5.2.45 on 2016-10-24.
  *
  * @author Barry vd. Heuvel <barryvdh@gmail.com>
  * @see https://github.com/barryvdh/laravel-ide-helper
@@ -6707,11 +6707,10 @@ namespace {
          * @param mixed $data
          * @param string $queue
          * @return mixed 
-         * @throws \Exception|\Throwable
          * @static 
          */
         public static function push($job, $data = '', $queue = null){
-            return \Illuminate\Queue\SyncQueue::push($job, $data, $queue);
+            return \Illuminate\Queue\DatabaseQueue::push($job, $data, $queue);
         }
         
         /**
@@ -6724,7 +6723,7 @@ namespace {
          * @static 
          */
         public static function pushRaw($payload, $queue = null, $options = array()){
-            return \Illuminate\Queue\SyncQueue::pushRaw($payload, $queue, $options);
+            return \Illuminate\Queue\DatabaseQueue::pushRaw($payload, $queue, $options);
         }
         
         /**
@@ -6734,11 +6733,37 @@ namespace {
          * @param string $job
          * @param mixed $data
          * @param string $queue
-         * @return mixed 
+         * @return void 
          * @static 
          */
         public static function later($delay, $job, $data = '', $queue = null){
-            return \Illuminate\Queue\SyncQueue::later($delay, $job, $data, $queue);
+            \Illuminate\Queue\DatabaseQueue::later($delay, $job, $data, $queue);
+        }
+        
+        /**
+         * Push an array of jobs onto the queue.
+         *
+         * @param array $jobs
+         * @param mixed $data
+         * @param string $queue
+         * @return mixed 
+         * @static 
+         */
+        public static function bulk($jobs, $data = '', $queue = null){
+            return \Illuminate\Queue\DatabaseQueue::bulk($jobs, $data, $queue);
+        }
+        
+        /**
+         * Release a reserved job back onto the queue.
+         *
+         * @param string $queue
+         * @param \StdClass $job
+         * @param int $delay
+         * @return mixed 
+         * @static 
+         */
+        public static function release($queue, $job, $delay){
+            return \Illuminate\Queue\DatabaseQueue::release($queue, $job, $delay);
         }
         
         /**
@@ -6749,7 +6774,50 @@ namespace {
          * @static 
          */
         public static function pop($queue = null){
-            return \Illuminate\Queue\SyncQueue::pop($queue);
+            return \Illuminate\Queue\DatabaseQueue::pop($queue);
+        }
+        
+        /**
+         * Delete a reserved job from the queue.
+         *
+         * @param string $queue
+         * @param string $id
+         * @return void 
+         * @static 
+         */
+        public static function deleteReserved($queue, $id){
+            \Illuminate\Queue\DatabaseQueue::deleteReserved($queue, $id);
+        }
+        
+        /**
+         * Get the underlying database instance.
+         *
+         * @return \Illuminate\Database\Connection 
+         * @static 
+         */
+        public static function getDatabase(){
+            return \Illuminate\Queue\DatabaseQueue::getDatabase();
+        }
+        
+        /**
+         * Get the expiration time in seconds.
+         *
+         * @return int|null 
+         * @static 
+         */
+        public static function getExpire(){
+            return \Illuminate\Queue\DatabaseQueue::getExpire();
+        }
+        
+        /**
+         * Set the expiration time in seconds.
+         *
+         * @param int|null $seconds
+         * @return void 
+         * @static 
+         */
+        public static function setExpire($seconds){
+            \Illuminate\Queue\DatabaseQueue::setExpire($seconds);
         }
         
         /**
@@ -6763,7 +6831,7 @@ namespace {
          */
         public static function pushOn($queue, $job, $data = ''){
             //Method inherited from \Illuminate\Queue\Queue            
-            return \Illuminate\Queue\SyncQueue::pushOn($queue, $job, $data);
+            return \Illuminate\Queue\DatabaseQueue::pushOn($queue, $job, $data);
         }
         
         /**
@@ -6778,21 +6846,7 @@ namespace {
          */
         public static function laterOn($queue, $delay, $job, $data = ''){
             //Method inherited from \Illuminate\Queue\Queue            
-            return \Illuminate\Queue\SyncQueue::laterOn($queue, $delay, $job, $data);
-        }
-        
-        /**
-         * Push an array of jobs onto the queue.
-         *
-         * @param array $jobs
-         * @param mixed $data
-         * @param string $queue
-         * @return mixed 
-         * @static 
-         */
-        public static function bulk($jobs, $data = '', $queue = null){
-            //Method inherited from \Illuminate\Queue\Queue            
-            return \Illuminate\Queue\SyncQueue::bulk($jobs, $data, $queue);
+            return \Illuminate\Queue\DatabaseQueue::laterOn($queue, $delay, $job, $data);
         }
         
         /**
@@ -6804,7 +6858,7 @@ namespace {
          */
         public static function setContainer($container){
             //Method inherited from \Illuminate\Queue\Queue            
-            \Illuminate\Queue\SyncQueue::setContainer($container);
+            \Illuminate\Queue\DatabaseQueue::setContainer($container);
         }
         
         /**
@@ -6816,7 +6870,7 @@ namespace {
          */
         public static function setEncrypter($encrypter){
             //Method inherited from \Illuminate\Queue\Queue            
-            \Illuminate\Queue\SyncQueue::setEncrypter($encrypter);
+            \Illuminate\Queue\DatabaseQueue::setEncrypter($encrypter);
         }
         
     }
@@ -7906,22 +7960,31 @@ namespace {
         }
         
         /**
-         * Gets a "parameter" value from any bag.
+         * Gets a "parameter" value.
          * 
-         * This method is mainly useful for libraries that want to provide some flexibility. If you don't need the
-         * flexibility in controllers, it is better to explicitly get request parameters from the appropriate
-         * public property instead (attributes, query, request).
+         * This method is mainly useful for libraries that want to provide some flexibility.
          * 
-         * Order of precedence: PATH (routing placeholders or custom attributes), GET, BODY
+         * Order of precedence: GET, PATH, POST
+         * 
+         * Avoid using this method in controllers:
+         * 
+         *  * slow
+         *  * prefer to get from a "named" source
+         * 
+         * It is better to explicitly get request parameters from the appropriate
+         * public property instead (query, attributes, request).
+         * 
+         * Note: Finding deep items is deprecated since version 2.8, to be removed in 3.0.
          *
          * @param string $key the key
          * @param mixed $default the default value if the parameter key does not exist
+         * @param bool $deep is parameter deep in multidimensional array
          * @return mixed 
          * @static 
          */
-        public static function get($key, $default = null){
+        public static function get($key, $default = null, $deep = false){
             //Method inherited from \Symfony\Component\HttpFoundation\Request            
-            return \Illuminate\Http\Request::get($key, $default);
+            return \Illuminate\Http\Request::get($key, $default, $deep);
         }
         
         /**
@@ -8367,7 +8430,7 @@ namespace {
          * Here is the process to determine the format:
          * 
          *  * format defined by the user (with setRequestFormat())
-         *  * _format request attribute
+         *  * _format request parameter
          *  * $default
          *
          * @param string $default The default format
@@ -12258,6 +12321,139 @@ namespace {
          */
         public static function componentCall($method, $parameters){
             return \Collective\Html\HtmlBuilder::componentCall($method, $parameters);
+        }
+        
+    }
+
+
+    class Menu extends \Caffeinated\Menus\Facades\Menu{
+        
+        /**
+         * Create a new menu instance.
+         *
+         * @param string $name
+         * @param callable $callback
+         * @return \Caffeinated\Menus\Builder 
+         * @static 
+         */
+        public static function make($name, $callback){
+            return \Caffeinated\Menus\Menu::make($name, $callback);
+        }
+        
+        /**
+         * Loads and merges configuration data.
+         *
+         * @param string $name
+         * @return array 
+         * @static 
+         */
+        public static function loadConfig($name){
+            return \Caffeinated\Menus\Menu::loadConfig($name);
+        }
+        
+        /**
+         * Find and return the given menu collection.
+         *
+         * @param string $key
+         * @return \Caffeinated\Menus\Collection 
+         * @static 
+         */
+        public static function get($key){
+            return \Caffeinated\Menus\Menu::get($key);
+        }
+        
+        /**
+         * Returns all menu instances.
+         *
+         * @return \Caffeinated\Menus\Collection 
+         * @static 
+         */
+        public static function all(){
+            return \Caffeinated\Menus\Menu::all();
+        }
+        
+    }
+
+
+    class Flash extends \Laracasts\Flash\Flash{
+        
+        /**
+         * Flash an information message.
+         *
+         * @param string $message
+         * @return $this 
+         * @static 
+         */
+        public static function info($message){
+            return \Laracasts\Flash\FlashNotifier::info($message);
+        }
+        
+        /**
+         * Flash a success message.
+         *
+         * @param string $message
+         * @return $this 
+         * @static 
+         */
+        public static function success($message){
+            return \Laracasts\Flash\FlashNotifier::success($message);
+        }
+        
+        /**
+         * Flash an error message.
+         *
+         * @param string $message
+         * @return $this 
+         * @static 
+         */
+        public static function error($message){
+            return \Laracasts\Flash\FlashNotifier::error($message);
+        }
+        
+        /**
+         * Flash a warning message.
+         *
+         * @param string $message
+         * @return $this 
+         * @static 
+         */
+        public static function warning($message){
+            return \Laracasts\Flash\FlashNotifier::warning($message);
+        }
+        
+        /**
+         * Flash an overlay modal.
+         *
+         * @param string $message
+         * @param string $title
+         * @param string $level
+         * @return $this 
+         * @static 
+         */
+        public static function overlay($message, $title = 'Notice', $level = 'info'){
+            return \Laracasts\Flash\FlashNotifier::overlay($message, $title, $level);
+        }
+        
+        /**
+         * Flash a general message.
+         *
+         * @param string $message
+         * @param string $level
+         * @return $this 
+         * @static 
+         */
+        public static function message($message, $level = 'info'){
+            return \Laracasts\Flash\FlashNotifier::message($message, $level);
+        }
+        
+        /**
+         * Add an "important" flash to the session.
+         *
+         * @return $this 
+         * @static 
+         */
+        public static function important(){
+            return \Laracasts\Flash\FlashNotifier::important();
         }
         
     }

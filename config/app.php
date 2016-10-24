@@ -152,6 +152,8 @@ return [
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
         Caffeinated\Menus\MenusServiceProvider::class,
+        Laracasts\Flash\FlashServiceProvider::class,
+        Ignited\LaravelOmnipay\LaravelOmnipayServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -209,6 +211,8 @@ return [
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
         'Menu' => Caffeinated\Menus\Facades\Menu::class,
+        'Flash' => Laracasts\Flash\Flash::class,
+        'Omnipay' => Ignited\LaravelOmnipay\Facades\OmnipayFacade::class,
 
     ],
 

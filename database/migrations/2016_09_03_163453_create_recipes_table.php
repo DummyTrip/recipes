@@ -19,7 +19,8 @@ class CreateRecipesTable extends Migration
             $table->string('name');
             $table->string('category');
             $table->string('description');
-            $table->integer('price');
+            $table->float('price');
+            $table->integer('num_owners');
             $table->timestamps();
         });
 

@@ -4,12 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\RecipeRequest;
 use App\Ingredient;
+use App\Jobs\SendEmail;
 use App\Quantity;
 use App\Recipe;
+use App\User;
 use DB;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use Illuminate\Support\Facades\Mail;
 
 class RecipeController extends Controller
 {
@@ -152,6 +155,7 @@ class RecipeController extends Controller
                                             "SELECT r.id, r.name, r.category, r.description, i.name iname, COUNT(r.id) " .
                                             "FROM recipes r INNER JOIN ingredient_recipe ir on r.id = ir.recipe_id " .
                                             "INNER JOIN ingredients i on ir.ingredient_id = i.id " .
+                                            "INNER JOIN recipe_user ru on ru.user_id = ". \Auth::user()->id ." and ru.recipe_id = r.id ".
                                             "WHERE i.name IN ($bindingsString) " .
                                             "GROUP BY r.id, r.name, r.category, r.description, i.name" .
                                             ") a " .
@@ -183,10 +187,35 @@ class RecipeController extends Controller
 
             $recipes = Recipe::whereIn('id', array_column($recipe_ids, 'id'))->paginate($results_per_page);
         } else {
-            $recipes = Recipe::paginate($results_per_page);
+            $recipes = Recipe::orderBy('num_owners', 'desc')->paginate($results_per_page);
         }
 
         return $recipes;
+    }
+
+    public function purchase(Recipe $recipe) {
+        $user = \Auth::user();
+
+        $recipe->owners()->syncWithoutDetaching([$user->id]);
+        $recipe->num_owners = $recipe->num_owners + 1;
+
+        $recipe->save();
+
+//        $this->dispatch(new SendEmail($user));
+
+        $payment = new OmnipayController();
+
+        $payment->postPayment($recipe);
+
+//        return redirect('recipes/');
+    }
+    
+    public function userRecipes(User $user) {
+        $results_per_page = 20;
+
+        $recipes = Recipe::where('creator_id', $user->id)->orderBy('num_owners', 'desc')->paginate($results_per_page);
+
+        return view('recipes.index', compact('recipes'));
     }
 
 }

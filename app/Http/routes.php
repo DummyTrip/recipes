@@ -15,6 +15,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/recipes/users/{user}', 'RecipeController@userRecipes');
+
+Route::get('/recipes/purchase/{recipe}', 'RecipeController@purchase');
 Route::resource('recipes', 'RecipeController');
 
 Route::auth();
@@ -23,5 +26,3 @@ Route::get('/', 'HomeController@index');
 Route::get('/home', 'HomeController@index');
 
 Route::auth();
-
-Route::get('/home', 'HomeController@index');
