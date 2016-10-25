@@ -8,6 +8,8 @@ use App\Jobs\SendEmail;
 use App\Quantity;
 use App\Recipe;
 use App\User;
+use Caffeinated\Menus\Builder;
+use Caffeinated\Menus\Facades\Menu;
 use DB;
 use Illuminate\Http\Request;
 
@@ -62,11 +64,7 @@ class RecipeController extends Controller
     public function store(RecipeRequest $request)
     {
         $input = $request->all();
-        $tmp = [];
-        foreach ($input['ingredients'] as $key => $value) {
-            $tmp[] = [$key, $value];
-        }
-//        return $tmp;
+
         $recipe = new Recipe();
 
         $this->saveRecipe($recipe, $input);
@@ -129,14 +127,18 @@ class RecipeController extends Controller
     {
         $recipe->name = $input['name'];
         $recipe->category = $input['category'];
+        $recipe->description = $input['description'];
+        $recipe->price = $input['price'];
 
         $recipe->save();
 
-        foreach ($input['ingredients'] as $key => $value) {
-            $ingredient = Ingredient::firstOrCreate(['name' => $value['name']]);
-            $quantity = Quantity::firstOrCreate(['measurement' => $value['measurement']]);
+        if (array_key_exists('ingredients', $input)) {
+            foreach ($input['ingredients'] as $key => $value) {
+                $ingredient = Ingredient::firstOrCreate(['name' => $value['name']]);
+                $quantity = Quantity::firstOrCreate(['measurement' => $value['measurement']]);
 
-            $recipe->ingredients()->syncWithoutDetaching([$ingredient->id => ['quantity_id' => $quantity->id, 'value' => $value['value']]]);
+                $recipe->ingredients()->syncWithoutDetaching([$ingredient->id => ['quantity_id' => $quantity->id, 'value' => $value['value']]]);
+            }
         }
 
     }
@@ -205,7 +207,7 @@ class RecipeController extends Controller
 
         $payment = new OmnipayController();
 
-        $payment->postPayment($recipe);
+        $payment->postPayment($recipe, $user);
 
 //        return redirect('recipes/');
     }

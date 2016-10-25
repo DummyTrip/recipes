@@ -3,7 +3,13 @@
 @section('content')
     <div class="container">
 
-        @include('flash::message')
+        @if(in_array('seller', \Auth::user()->role_names))
+            <div class="row">
+                <div class="col-md-12">
+                    <a href="{{ action("RecipeController@create") }}" style="float: right"><h3>Create Recipe</h3></a>
+                </div>
+            </div>
+        @endif
 
         <h2>Recipes</h2>
 

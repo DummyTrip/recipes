@@ -19,7 +19,6 @@ class MenuMiddleware
     public function handle($request, Closure $next)
     {
         Menu::make('example', function(Builder $menu) {
-            $menu->add('Home', 'home');
             $menu->add('Recipes', 'recipes');
         });
 

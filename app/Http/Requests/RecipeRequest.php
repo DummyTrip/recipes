@@ -20,10 +20,10 @@ class RecipeRequest extends Request
     {
         $messages = [];
 
-        foreach ($this->input('ingredients') as $key => $value) {
-            $messages['ingredients.'.$key.'.name.required'] = 'The name field is required.';
-            $messages['ingredients.'.$key.'.value.required'] = 'The value field is required.';
-        }
+//        foreach ($this->input('ingredients') as $key => $value) {
+//            $messages['ingredients.'.$key.'.name.required'] = 'The name field is required.';
+//            $messages['ingredients.'.$key.'.value.required'] = 'The value field is required.';
+//        }
 
         return $messages;
     }

@@ -23,7 +23,15 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
-    
+
+    protected $appends = ['role_names'];
+
+
+    public function roles()
+    {
+        return $this->belongsToMany('App\Role');
+    }
+
     public function createdRecipes() {
         return $this->hasMany('App\Recipe');
     }
@@ -31,4 +39,10 @@ class User extends Authenticatable
     public function boughtRecipes() {
         return $this->belongsToMany('App\Recipe');
     }
+
+    public function getRoleNamesAttribute()
+    {
+        return $this->roles->lists('role')->all();
+    }
+
 }

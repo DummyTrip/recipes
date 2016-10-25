@@ -9,7 +9,6 @@
         </div>
     </div>
 
-
     <div class="form-group{{ $errors->has('category') ? ' has-error' : '' }}">
         {!! Form::label('category', 'Category:', ['class' => 'col-md-4 control-label']) !!}
 
@@ -17,6 +16,26 @@
             {!! Form::text('category', old('category'), ['class' => 'form-control']) !!}
 
             @include('partials.error', ['error' => 'category'])
+        </div>
+    </div>
+
+    <div class="form-group{{ $errors->has('description') ? ' has-error' : '' }}">
+        {!! Form::label('description', 'Description:', ['class' => 'col-md-4 control-label']) !!}
+
+        <div class="col-md-6">
+            {!! Form::textarea('description', old('description'), ['class' => 'form-control']) !!}
+
+            @include('partials.error', ['error' => 'description'])
+        </div>
+    </div>
+
+    <div class="form-group{{ $errors->has('price') ? ' has-error' : '' }}">
+        {!! Form::label('price', 'Price:', ['class' => 'col-md-4 control-label']) !!}
+
+        <div class="col-md-6">
+            {!! Form::text('price', old('price'), ['class' => 'form-control']) !!}
+
+            @include('partials.error', ['error' => 'price'])
         </div>
     </div>
 
@@ -36,22 +55,8 @@
 
 @section('footer')
     <script type="text/javascript">
-        {{--@if(!session()->has('index'))--}}
-            {{--{{ session(['index' => 0]) }}--}}
-        {{--@endif--}}
         {{ session(['index' => 0]) }}
         index = -1;
-
-        {{--$(document).ready(function() {--}}
-            {{--alert("da");--}}
-
-            {{--@if( session('index') > 0 )--}}
-                {{--@foreach( range(0, session('index')) as $index )--}}
-                    {{--addInputIngredient();--}}
-                {{--@endforeach--}}
-            {{--@endif--}}
-        {{--});--}}
-
 
         $("#add_ingredient").click(function() {
             // add the new div after 100 milliseconds
@@ -59,15 +64,6 @@
             setTimeout(addInputIngredient, 100);
             {{ session(['index' => (session('index') + 1)]) }}
         });
-
-        {{--$("[id^=del_ingredient]").click(function() {--}}
-            {{--// remove the new div after 100 milliseconds--}}
-{{--//            setTimeout(removeInputIngredient(), 100);--}}
-            {{--$("#ingredients\\[0\\]").remove();--}}
-            {{--alert('da');--}}
-            {{--{{ session(['index' => (session('index') - 1)]) }}--}}
-        {{--});--}}
-
 
         function addInputIngredient() {
             var divName = 'createRecipeForm';
@@ -105,7 +101,6 @@
                             "</div>"+
 
                     "<div class='col-md-1'>"+
-//                    "<button class='btn btn-danger' id='del_ingredient[0]' type='button'><i class='fa fa-times' aria-hidden='true'></i></button>"+
                     "</div>"+
                     "</div>";
 
